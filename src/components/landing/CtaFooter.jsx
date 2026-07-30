@@ -1,24 +1,64 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Button } from '../ui/button'
 
 export default function CtaFooter() {
   return (
     <>
-      <section className="border-t border-border bg-primary py-16">
-        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6">
-          <h2 className="text-3xl font-semibold tracking-tight text-primary-foreground sm:text-4xl">
-            Sẵn sàng tự tìm ra câu trả lời?
-          </h2>
-          <p className="max-w-xl text-lg leading-relaxed text-primary-foreground/85">
-            Không cần tài khoản. Đặt câu hỏi đầu tiên ngay bây giờ.
-          </p>
-          <Link
-            to="/phan-tich"
-            className="inline-flex h-12 items-center gap-2 rounded-xl bg-card px-6 text-base font-semibold text-foreground transition-transform hover:-translate-y-0.5"
-          >
-            Thử ngay, miễn phí
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
+      {/* CTA — 21st.dev @sshahaider/cta-3, re-theme token + Việt hoá + nối route. */}
+      <section className="px-4 py-20 sm:px-6">
+        <div
+          className="relative mx-auto flex w-full max-w-3xl flex-col justify-between gap-y-6 border-y border-border px-6 py-10"
+          style={{
+            backgroundImage:
+              'radial-gradient(35% 80% at 25% 0%, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent)',
+          }}
+        >
+          <Plus
+            className="absolute top-[-12.5px] left-[-11.5px] z-[1] size-6 text-primary/70"
+            strokeWidth={1}
+            aria-hidden="true"
+          />
+          <Plus
+            className="absolute top-[-12.5px] right-[-11.5px] z-[1] size-6 text-primary/70"
+            strokeWidth={1}
+            aria-hidden="true"
+          />
+          <Plus
+            className="absolute bottom-[-12.5px] left-[-11.5px] z-[1] size-6 text-primary/70"
+            strokeWidth={1}
+            aria-hidden="true"
+          />
+          <Plus
+            className="absolute right-[-11.5px] bottom-[-12.5px] z-[1] size-6 text-primary/70"
+            strokeWidth={1}
+            aria-hidden="true"
+          />
+
+          <div className="pointer-events-none absolute -inset-y-6 left-0 w-px border-l border-border" />
+          <div className="pointer-events-none absolute -inset-y-6 right-0 w-px border-r border-border" />
+          <div className="absolute top-0 left-1/2 -z-10 h-full border-l border-dashed border-border" />
+
+          <div className="space-y-2">
+            <h2 className="text-center text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              Sẵn sàng tự đánh giá một tin đáng ngờ?
+            </h2>
+            <p className="text-center leading-relaxed text-muted-foreground">
+              Không cần tài khoản. Chọn một tình huống và bắt đầu phân tích ngay.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button variant="outline" className="h-11" asChild>
+              <a href="#cach-hoat-dong">Cách hoạt động</a>
+            </Button>
+            <Button className="h-11" asChild>
+              <Link to="/phan-tich">
+                Phân tích ngay
+                <ArrowRight className="ml-1 size-4" aria-hidden="true" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
