@@ -10,7 +10,7 @@ const STEPS = [
   {
     icon: Compass,
     title: '2. AI dẫn dắt từng bước',
-    desc: 'Thay vì đưa đáp án, Socratic hỏi ngược để lộ ra chỗ bạn đang hiểu sai hoặc thiếu dữ kiện.',
+    desc: 'Thay vì đưa đáp án, AskWise hỏi ngược để lộ ra chỗ bạn đang hiểu sai hoặc thiếu dữ kiện.',
   },
   {
     icon: Lightbulb,

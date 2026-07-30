@@ -100,7 +100,7 @@ export default function SocraticDemo() {
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-secondary" />
             </span>
             <span className="text-sm font-medium text-foreground">
-              Socratic · ví dụ minh hoạ
+              AskWise · ví dụ minh hoạ
             </span>
           </div>
           <button
@@ -148,8 +148,8 @@ export default function SocraticDemo() {
       </div>
 
       <p className="sr-only">
-        Ví dụ minh hoạ cách Socratic trò chuyện:{' '}
-        {SCRIPT.map((m) => `${m.role === 'ai' ? 'Socratic' : 'Bạn'}: ${m.text}`).join(
+        Ví dụ minh hoạ cách AskWise trò chuyện:{' '}
+        {SCRIPT.map((m) => `${m.role === 'ai' ? 'AskWise' : 'Bạn'}: ${m.text}`).join(
           ' ',
         )}
       </p>

@@ -13,7 +13,7 @@ export default function ChatPage() {
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Trang chủ
         </Link>
-        <span className="text-sm font-semibold text-foreground">Socratic</span>
+        <span className="text-sm font-semibold text-foreground">AskWise</span>
       </header>
       <Chat />
     </div>

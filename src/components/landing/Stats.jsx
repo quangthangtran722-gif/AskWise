@@ -4,7 +4,7 @@ import { ShieldCheck } from 'lucide-react'
 // viết lại số liệu về sản phẩm. Số liệu là minh hoạ (xem badge).
 const SUB_STATS = [
   { value: '6', label: 'Dạng lừa đảo đã phân tích' },
-  { value: '6 bước', label: 'Mỗi phiên Socratic' },
+  { value: '6 bước', label: 'Mỗi phiên phân tích' },
   { value: '92%', label: 'Người dùng thấy tự tin hơn' },
 ]
 

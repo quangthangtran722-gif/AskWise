@@ -25,7 +25,7 @@ export default function WhySocratic() {
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
             Socrates tin rằng chúng ta tin vào điều gì đó nhất khi tự mình nhận ra, không phải
-            khi được bảo phải tin. Đó là nguyên tắc duy nhất mà Socratic tuân theo.
+            khi được bảo phải tin. Đó là nguyên tắc duy nhất mà AskWise tuân theo.
           </p>
         </div>
 
@@ -46,7 +46,7 @@ export default function WhySocratic() {
 
           <div className="rounded-2xl border border-primary/30 bg-card p-6 ring-1 ring-primary/10">
             <p className="mb-4 text-sm font-semibold tracking-wide text-primary uppercase">
-              Cùng Socratic
+              Cùng AskWise
             </p>
             <ul className="space-y-4">
               {ROWS.map((row) => (

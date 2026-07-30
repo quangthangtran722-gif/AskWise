@@ -1,4 +1,4 @@
-# Socratic — Trợ lý phân tích tin tuyển dụng đáng ngờ
+# AskWise — Trợ lý phân tích tin tuyển dụng đáng ngờ
 
 Ứng dụng web dùng phương pháp Socratic: thay vì kết luận thẳng một tin tuyển dụng
 có phải lừa đảo hay không, AI đặt câu hỏi dẫn dắt từng bước (6 bước) để người dùng

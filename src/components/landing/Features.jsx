@@ -97,7 +97,7 @@ export default function Features() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Vì sao Socratic hiệu quả
+            Vì sao AskWise hiệu quả
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
             Không phải một công cụ tra cứu — mà là cách rèn cho bạn phản xạ tự

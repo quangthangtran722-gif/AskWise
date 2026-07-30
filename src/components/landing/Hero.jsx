@@ -53,7 +53,7 @@ export default function Hero() {
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Socratic là AI đồng hành giúp bạn tự đánh giá độ tin cậy của một tin tuyển dụng
+            AskWise là AI đồng hành giúp bạn tự đánh giá độ tin cậy của một tin tuyển dụng
             đáng ngờ: thay vì nói thẳng đây có phải lừa đảo hay không, AI đặt câu hỏi dẫn dắt
             từng bước để bạn tự nhận ra dấu hiệu bất thường — và nhớ lâu hơn nhiều so với việc
             chỉ được cảnh báo suông.
