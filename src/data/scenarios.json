@@ -1,0 +1,44 @@
+[
+  {
+    "id": "job-scam-dataentry",
+    "icon": "Briefcase",
+    "title": "Việc nhẹ lương cao",
+    "summary": "Tuyển nhập liệu từ xa, $20/ngày, không cần kinh nghiệm, chỉ liên hệ qua Telegram.",
+    "seed": "Tin tôi muốn phân tích: Việc nhẹ lương cao — Remote data entry job. $20/day. No experience needed. Contact via Telegram only."
+  },
+  {
+    "id": "gia-danh-doanh-nghiep",
+    "icon": "Building2",
+    "title": "Giả danh doanh nghiệp lớn",
+    "summary": "Báo trúng tuyển Chăm sóc Khách hàng, yêu cầu đóng phí đồng phục 500.000đ để xác nhận.",
+    "seed": "Tin tôi muốn phân tích: Xin chúc mừng! Hồ sơ của bạn đã được lựa chọn cho vị trí Nhân viên Chăm sóc Khách hàng. Vui lòng hoàn thành biểu mẫu và thanh toán phí đồng phục 500.000 VNĐ để xác nhận lịch đào tạo."
+  },
+  {
+    "id": "nhiem-vu-online",
+    "icon": "Smartphone",
+    "title": "Nhiệm vụ like/follow kiếm tiền",
+    "summary": "Tuyển nhân viên online bấm like, follow, xem video nhận tiền ngay trong ngày.",
+    "seed": "Tin tôi muốn phân tích: 📱 Tuyển nhân viên online. Chỉ cần bấm like, follow, xem video là có tiền. Lương nhận ngay trong ngày 💰 Inbox để nhận việc."
+  },
+  {
+    "id": "form-tuyen-dung-gia",
+    "icon": "ClipboardList",
+    "title": "Form tuyển dụng qua SMS",
+    "summary": "Tin tuyển nhân viên hành chính, điền form qua link lạ để nhận lịch phỏng vấn.",
+    "seed": "Tin tôi muốn phân tích: Công ty đang tuyển dụng nhân viên hành chính. Điền thông tin tại biểu mẫu sau để nhận lịch phỏng vấn: [đường dẫn]"
+  },
+  {
+    "id": "viec-lam-nuoc-ngoai",
+    "icon": "Plane",
+    "title": "Việc làm Nhật Bản lương cao",
+    "summary": "Tuyển lao động Nhật lương 45–60 triệu, không cần ngoại ngữ, xuất cảnh nhanh.",
+    "seed": "Tin tôi muốn phân tích: 🇯🇵 Tuyển lao động Nhật Bản. Lương từ 45–60 triệu/tháng. Không yêu cầu ngoại ngữ. Hồ sơ cực dễ, xuất cảnh nhanh. Liên hệ ngay để giữ suất."
+  },
+  {
+    "id": "gia-danh-linkedin",
+    "icon": "UserRoundSearch",
+    "title": "Giả danh nhà tuyển dụng LinkedIn",
+    "summary": "Nhà tuyển dụng lạ khen hồ sơ, yêu cầu tải 'app tuyển dụng' qua link để tiếp tục.",
+    "seed": "Tin tôi muốn phân tích: Chào bạn, chúng tôi đã xem hồ sơ của bạn và nhận thấy bạn rất phù hợp với vị trí làm việc từ xa của công ty. Vui lòng tiếp tục quy trình tuyển dụng bằng cách tải ứng dụng tuyển dụng của chúng tôi tại đây: [liên kết]."
+  }
+]

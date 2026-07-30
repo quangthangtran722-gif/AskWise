@@ -1,0 +1,34 @@
+{
+  "steps": [
+    {
+      "type": "choice",
+      "question": "Trước khi thử tình huống này, bạn đã từng gặp tin nhắn hoặc bài đăng giống tình huống vừa rồi chưa?",
+      "options": ["Rồi, nhiều lần", "Rồi, một vài lần", "Chưa từng", "Không nhớ"]
+    },
+    {
+      "type": "choice",
+      "question": "Nếu là bạn của 3 tháng trước, bạn nghĩ mình sẽ phản ứng thế nào với tình huống này?",
+      "options": [
+        "Có thể sẽ tin và làm theo",
+        "Có lẽ sẽ phân vân",
+        "Có thể sẽ nghi ngờ",
+        "Chắc chắn sẽ nhận ra đó là lừa đảo"
+      ]
+    },
+    {
+      "type": "choice",
+      "question": "Trong 6 bước vừa thực hiện, bước nào khiến bạn phải suy nghĩ nhiều nhất?",
+      "options": [
+        "Nhận biết dấu hiệu đáng ngờ",
+        "Kiểm chứng thông tin",
+        "Đưa ra quyết định",
+        "Không có bước nào quá khó"
+      ]
+    },
+    {
+      "type": "text",
+      "question": "Nếu gặp lại một tình huống tương tự trong tương lai, bạn sẽ làm gì đầu tiên?"
+    }
+  ],
+  "closing": "Cảm ơn bạn đã hoàn thành. Kỹ năng vừa luyện tập không chỉ áp dụng cho tin tuyển dụng — nó áp dụng cho bất kỳ thông tin nào bạn cần đánh giá độ tin cậy."
+}
