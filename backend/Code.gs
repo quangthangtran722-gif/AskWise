@@ -94,7 +94,13 @@ const MODEL = "gemini-3-flash-preview"; // Chỉ đổi sang bản GA SAU KHI đ
 const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/";
 const MAX_ATTEMPTS = 3; // 1 lần gọi + 2 lần thử lại
 const RETRY_CODES = [429, 500, 502, 503, 504];
-const RETRY_DELAYS_MS = [700, 1500]; // tổng thời gian chờ thêm tối đa ~2.2s
+const RETRY_DELAYS_MS = [700, 1500]; // thời gian NGHỈ giữa các lần thử
+
+// Trần thời gian tổng. Retry chỉ đáng làm khi lỗi trả về NHANH; nếu bản thân lệnh
+// gọi Gemini đã chậm thì thử lại 3 lần chỉ nhân ba thời gian chờ (đo thực tế:
+// 1 request = 80s = 3 × ~26s). Quá mốc này thì trả lỗi luôn, đừng thử nữa.
+// Phải nhỏ hơn TIMEOUT_MS của frontend (25s) — client đã bỏ cuộc thì chạy tiếp vô ích.
+const DEADLINE_MS = 20000;
 
 function jsonOut(obj) {
   return ContentService
@@ -198,9 +204,13 @@ function doPost(e) {
       if (RETRY_CODES.indexOf(code) !== -1) {
         console.warn("Gemini HTTP " + code + " (lần " + attempt + "/" + MAX_ATTEMPTS + ") — " + raw.slice(0, 300));
         lastError = { error: "UPSTREAM_" + code, message: "Máy chủ AI đang quá tải. Vui lòng thử lại." };
-        if (attempt < MAX_ATTEMPTS) {
+        const elapsed = Date.now() - t0;
+        if (attempt < MAX_ATTEMPTS && elapsed < DEADLINE_MS) {
           Utilities.sleep(RETRY_DELAYS_MS[attempt - 1]);
           continue;
+        }
+        if (elapsed >= DEADLINE_MS) {
+          console.warn("Bỏ retry: đã chạy " + elapsed + "ms, quá trần " + DEADLINE_MS + "ms.");
         }
         break;
       }

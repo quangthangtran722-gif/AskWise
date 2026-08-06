@@ -56,8 +56,10 @@ export async function askSocraticTutor(conversationHistory) {
     try {
       data = JSON.parse(raw)
     } catch {
-      // Backend trả về text thuần thay vì JSON.
-      return toStepLabel(raw.trim())
+      // Backend LUÔN trả JSON qua ContentService. Nhận được text thuần nghĩa là
+      // request đã lạc đường (Apps Script bỏ cuộc giữa chừng → Google trả về trang
+      // doGet). Tuyệt đối không hiển thị chuỗi này như câu trả lời của AI.
+      throw new Error('Máy chủ AI trả về dữ liệu không hợp lệ. Vui lòng thử lại.')
     }
 
     // Apps Script LUÔN trả HTTP 200 (ContentService không set được status code),
