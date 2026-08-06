@@ -207,7 +207,15 @@ function Chat() {
         {isLoading && (
           <div className="bubble bubble-ai" aria-live="polite">
             <span className="bubble-label">AI</span>
-            <Typing className="mt-2 w-8 py-1 text-[var(--color-primary)]" />
+            {/* Chờ có thể tới ~20s (thinking model) — nói rõ để không bị hiểu là treo.
+                Chấm động chỉ là trang trí; câu chữ mới là thứ đọc cho screen reader. */}
+            <div className="mt-2 flex items-center gap-2.5">
+              <Typing
+                aria-hidden="true"
+                className="w-8 py-1 text-[var(--color-primary)]"
+              />
+              <span className="text-sm opacity-60">AI đang phân tích…</span>
+            </div>
           </div>
         )}
 

@@ -1,7 +1,10 @@
 const APPS_SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbyxIkhNc5Jl0LW0nYZCICGBWX4hXyKTa8pacRXqgxlB9A1SBN_mbhO1J3GpUTPVbhSrFA/exec'
 
-const TIMEOUT_MS = 12000
+// Backend dùng thinking model + gửi lại toàn bộ lịch sử mỗi lượt, nên các bước
+// cuối (5–6) thường mất 15–20s. Cắt ở 12s là tự tạo ra lỗi giả.
+// Backend cũng tự retry 429/503 (tối đa ~2.2s), ngân sách này đã tính cả phần đó.
+const TIMEOUT_MS = 25000
 
 // Backend đánh số câu bằng "Câu hỏi X trên 6" (VN) hoặc "Question X of 6" (EN).
 // Chuẩn hoá về "Bước X/6" ngay tại frontend, không đụng system prompt/backend.
@@ -57,6 +60,17 @@ export async function askSocraticTutor(conversationHistory) {
       return toStepLabel(raw.trim())
     }
 
+    // Apps Script LUÔN trả HTTP 200 (ContentService không set được status code),
+    // nên lỗi backend nằm trong body dưới dạng { error, message }.
+    // Không đọc ở đây thì mọi lỗi đều thành một câu chung chung, mất chẩn đoán.
+    if (data && typeof data.error === 'string') {
+      throw new Error(
+        typeof data.message === 'string' && data.message.trim()
+          ? data.message
+          : 'Máy chủ AI gặp lỗi. Vui lòng thử lại.',
+      )
+    }
+
     // Chấp nhận nhiều dạng key phổ biến để linh hoạt với backend.
     const reply =
       data.reply ?? data.text ?? data.message ?? data.answer ?? data.response
@@ -69,7 +83,7 @@ export async function askSocraticTutor(conversationHistory) {
   } catch (err) {
     if (err.name === 'AbortError') {
       throw new Error(
-        'Máy chủ phản hồi quá lâu (quá 12 giây). Vui lòng thử lại.',
+        'Máy chủ phản hồi quá lâu (quá 25 giây). Vui lòng thử lại.',
       )
     }
     throw err
