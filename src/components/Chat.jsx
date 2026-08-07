@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import scenarios from '../data/scenarios.json'
 import debrief from '../data/debrief.json'
-import { askSocraticTutor } from '../services/aiService'
+import { askSocraticTutor, parseStep } from '../services/aiService'
 import CaseSelector from './CaseSelector'
 import { Button } from './ui/button'
 import { Typing } from './ui/typing'
@@ -10,9 +10,12 @@ import './Chat.css'
 const DEBRIEF_STEPS = debrief.steps
 const DEBRIEF_CLOSING = debrief.closing
 
-// Backend đánh số "Question 6 of 6" ở câu cuối; nhận diện để chuyển sang debrief.
+// Nhận diện câu cuối để chuyển sang debrief. Dùng chung parseStep với aiService —
+// trước đây mỗi nơi một regex nên khi backend đổi "trên" thành "của" thì nhãn hỏng
+// ở chỗ này còn app thì gọi backend lần thứ 7 (đúng lượt backend crash).
 function isFinalQuestion(text) {
-  return /6\s*(of|\/|trên)\s*6/i.test(text)
+  const step = parseStep(text)
+  return !!step && step.current >= step.total
 }
 
 function Chat() {
@@ -164,8 +167,8 @@ function Chat() {
   const currentStep = (() => {
     for (let i = messages.length - 1; i >= 0; i -= 1) {
       if (messages[i].role === 'ai') {
-        const m = messages[i].text.match(/Bước\s*(\d+)\s*\/\s*6/i)
-        if (m) return Math.min(Number(m[1]), 6)
+        const step = parseStep(messages[i].text)
+        if (step) return Math.min(step.current, 6)
       }
     }
     return 0

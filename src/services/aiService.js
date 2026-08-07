@@ -6,14 +6,32 @@ const APPS_SCRIPT_URL =
 // Backend cũng tự retry 429/503 (tối đa ~2.2s), ngân sách này đã tính cả phần đó.
 const TIMEOUT_MS = 25000
 
-// Backend đánh số câu bằng "Câu hỏi X trên 6" (VN) hoặc "Question X of 6" (EN).
+// Backend (Gemini) tự đánh số câu và ĐỔI CÁCH DIỄN ĐẠT giữa chừng: đã gặp
+// "Câu hỏi 3 trên 6" ở đầu phiên rồi "Câu hỏi 5 của 6" từ bước 5. Vì vậy phải
+// nhận mọi biến thể nối số, không chỉ "trên"/"of".
+// `bước` nằm trong danh sách để parseStep() đọc lại được text ĐÃ chuẩn hoá.
+const STEP_PATTERN =
+  /(?:bước|câu\s*hỏi|câu|question|q)\s*(?:số\s*)?(\d+)\s*(?:\/|trên|của|trong|of|out\s+of|[-–—])\s*(\d+)/gi
+
+/**
+ * Đọc số bước từ một đoạn text, dù ở dạng thô của backend hay đã chuẩn hoá.
+ * Lấy lần khớp CUỐI CÙNG — một message có thể nhắc lại bước trước rồi mới hỏi bước mới.
+ *
+ * @returns {{current: number, total: number} | null}
+ */
+export function parseStep(text) {
+  if (typeof text !== 'string') return null
+  STEP_PATTERN.lastIndex = 0 // regex có cờ /g → phải reset trước mỗi lần exec
+  let match
+  let last = null
+  while ((match = STEP_PATTERN.exec(text)) !== null) last = match
+  return last ? { current: Number(last[1]), total: Number(last[2]) } : null
+}
+
 // Chuẩn hoá về "Bước X/6" ngay tại frontend, không đụng system prompt/backend.
 function toStepLabel(text) {
   return text
-    .replace(
-      /(?:Câu\s*hỏi|Câu|Question)\s*(\d+)\s*(?:trên|of|\/)\s*(\d+)/gi,
-      'Bước $1/$2',
-    )
+    .replace(STEP_PATTERN, 'Bước $1/$2')
     // Chat hiển thị text thuần, không render markdown → bỏ dấu ** cho sạch.
     .replace(/\*\*/g, '')
 }
