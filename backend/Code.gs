@@ -36,7 +36,13 @@ Rules:
   honest impressions; and you will share your own honest take at
   the end. Do not explain MIL further than one sentence. Then ask
   question 1 in the SAME message. Never repeat this intro.
-- Label each main question with its number, e.g. "Question 3 of 6:".
+- Label each main question with its number using EXACTLY one of these
+  two strings and NO other wording:
+    · when replying in Vietnamese: "Câu hỏi X trên 6:"
+    · when replying in English:    "Question X of 6:"
+  Never use any other connector word — not "của", not "trong", not
+  "/", not "out of". The frontend matches this label literally, so a
+  reworded label breaks the progress bar and the ending sequence.
   Follow-up questions are not numbered.
 - Ask ONE question per turn, 1-2 sentences, conversational, not
   preachy.
@@ -90,7 +96,19 @@ never invent details, and no verdict until the user's summary (or
 until they clearly quit).`;
 
 // ===================== CẤU HÌNH =====================
-const MODEL = "gemini-3-flash-preview"; // Chỉ đổi sang bản GA SAU KHI đọc log (xem HUONG-DAN-DEPLOY.md)
+// Đo trên production 2026-08-06: 1 request thật mất 79.9s, trong khi request
+// KHÔNG gọi Gemini chỉ mất 1.5-6.7s → nghẽn nằm ở lệnh gọi Gemini, không phải
+// Apps Script. 80s ≈ 3 lần thử × ~26s. Đổi sang bản GA; chạy diagnose() để tự
+// kiểm chứng bằng số liệu thay vì tin lời.
+const MODEL = "gemini-2.5-flash";
+// const MODEL = "gemini-3-flash-preview";  // bản cũ, giữ lại để so sánh
+
+// Dòng 2.5 mặc định BẬT "thinking" (suy nghĩ trước khi trả lời) → chậm hơn nhiều.
+// Mỗi lượt ở đây chỉ cần 1 câu hỏi ngắn nên không cần. Đặt false nếu muốn bật lại.
+// ⚠️ Field thinkingConfig chỉ hợp lệ với dòng 2.5. Nếu đổi MODEL sang dòng khác,
+// chạy diagnose() kiểm tra TRƯỚC — field lạ bị trả về 400 INVALID_ARGUMENT.
+const DISABLE_THINKING = true;
+
 const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/";
 const MAX_ATTEMPTS = 3; // 1 lần gọi + 2 lần thử lại
 const RETRY_CODES = [429, 500, 502, 503, 504];
@@ -101,6 +119,18 @@ const RETRY_DELAYS_MS = [700, 1500]; // thời gian NGHỈ giữa các lần th�
 // 1 request = 80s = 3 × ~26s). Quá mốc này thì trả lỗi luôn, đừng thử nữa.
 // Phải nhỏ hơn TIMEOUT_MS của frontend (25s) — client đã bỏ cuộc thì chạy tiếp vô ích.
 const DEADLINE_MS = 20000;
+
+function buildPayload(contents) {
+  const generationConfig = { temperature: 0.5, maxOutputTokens: 2048 };
+  if (DISABLE_THINKING) {
+    generationConfig.thinkingConfig = { thinkingBudget: 0 };
+  }
+  return JSON.stringify({
+    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+    contents: contents,
+    generationConfig: generationConfig
+  });
+}
 
 function jsonOut(obj) {
   return ContentService
@@ -177,11 +207,7 @@ function doPost(e) {
       return jsonOut({ error: "NO_API_KEY", message: "Máy chủ chưa được cấu hình khoá API." });
     }
 
-    const payload = JSON.stringify({
-      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-      contents: contents,
-      generationConfig: { temperature: 0.5, maxOutputTokens: 2048 }
-    });
+    const payload = buildPayload(contents);
 
     let lastError = { error: "UNKNOWN", message: "Không gọi được máy chủ AI." };
 
@@ -267,6 +293,55 @@ function doPost(e) {
 }
 
 // ===================== TEST TRONG EDITOR =====================
+
+/**
+ * Đo thẳng độ trễ của từng model, KHÔNG đi qua doPost/retry/system prompt.
+ * Chạy hàm này trong editor rồi đọc Execution log — nó trả lời dứt điểm câu
+ * "chậm là do model hay do code của mình".
+ *
+ * Mỗi dòng kết quả: <model> → HTTP <mã> · <thời gian>ms · <ghi chú>
+ * Dòng nào nhanh nhất mà HTTP 200 thì chọn model đó.
+ */
+function diagnose() {
+  const apiKey = PropertiesService.getScriptProperties().getProperty("GEMINI_KEY");
+  if (!apiKey) {
+    console.log("❌ THIẾU GEMINI_KEY trong Script Properties — không đo được.");
+    return;
+  }
+
+  const contents = [{ role: "user", parts: [{ text: "Xin chào, trả lời ngắn gọn." }] }];
+  const variants = [
+    { label: "gemini-2.5-flash  (tắt thinking)", model: "gemini-2.5-flash", noThink: true },
+    { label: "gemini-2.5-flash  (mặc định)    ", model: "gemini-2.5-flash", noThink: false },
+    { label: "gemini-3-flash-preview (bản cũ) ", model: "gemini-3-flash-preview", noThink: false }
+  ];
+
+  const rows = [];
+  for (const v of variants) {
+    const gc = { temperature: 0.5, maxOutputTokens: 256 };
+    if (v.noThink) gc.thinkingConfig = { thinkingBudget: 0 };
+
+    const t0 = Date.now();
+    let code, note;
+    try {
+      const res = UrlFetchApp.fetch(API_URL + v.model + ":generateContent?key=" + apiKey, {
+        method: "post",
+        contentType: "application/json",
+        payload: JSON.stringify({ contents: contents, generationConfig: gc }),
+        muteHttpExceptions: true
+      });
+      code = res.getResponseCode();
+      note = (code === 200) ? "OK" : res.getContentText().slice(0, 160).replace(/\s+/g, " ");
+    } catch (err) {
+      code = "NGOẠI_LỆ";
+      note = String(err).slice(0, 160);
+    }
+    rows.push(v.label + " → HTTP " + code + " · " + (Date.now() - t0) + "ms · " + note);
+  }
+
+  console.log("=== KẾT QUẢ ĐO ĐỘ TRỄ ===\n" + rows.join("\n"));
+}
+
 function testChat() {
   // Dùng role "assistant" đúng như frontend gửi thật, để kiểm tra normalizeRole().
   const fake = {

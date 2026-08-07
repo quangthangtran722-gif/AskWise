@@ -79,9 +79,16 @@ section Aceternity feature-hover (Features), Bold Stats (Stats), CTA 3 (CtaFoote
     Script, phải deploy bằng **Manage deployments → Edit → New version** để giữ URL).
   - Frontend đã sửa: timeout 12s → **25s**, đọc `{error, message}` từ body (Apps
     Script luôn trả HTTP 200 nên `response.ok` vô dụng), thêm chữ "AI đang phân tích…".
-  - **Chưa xong**: sau khi deploy phải đọc Executions log (dòng
-    `OK · N lượt · Xms · thử lần N · finishReason=`) để quyết định có đổi sang model
-    GA `gemini-2.5-flash` không. **Đừng đổi model trước khi có số liệu.**
+  - Ngọc đã deploy vòng 1 (2026-08-06) — đã kiểm chứng: `doGet` trả "AskWise", 3 guard
+    trả `{error, message}` có cấu trúc thay vì `TypeError`. **Phần xử lý lỗi xong.**
+  - Đo trên production: request KHÔNG gọi Gemini mất 1.5–6.7s, request CÓ gọi Gemini
+    mất **79.9s** → nghẽn ở lệnh gọi Gemini. 80s ≈ 3 lần thử × ~26s, tức vòng retry
+    đang nhân ba thời gian chờ (retry chỉ đúng khi lỗi trả về NHANH).
+  - Vòng 2 đã chuẩn bị, **chờ Ngọc deploy**: `MODEL` → `gemini-2.5-flash` (GA),
+    `DISABLE_THINKING = true`, `DEADLINE_MS = 20000`, và hàm `diagnose()` chạy tay
+    trong editor để đo thẳng độ trễ 3 model (đo trước, đừng đoán).
+  - **Chưa xong**: chưa ai chạy `diagnose()` nên con số ~26s/lần gọi vẫn là suy ra từ
+    80s ÷ 3, chưa đo trực tiếp.
 - **(b) 🟠 Testimonials còn placeholder** — avatar là chữ cái (M/L/H/T/N), nội dung là
   ví dụ minh hoạ. **Cần xác nhận persona đúng là "sinh viên / người tìm việc remote"
   trước khi thay ảnh & lời thật.** Component `ui/animated-tooltip.jsx` nhận `items`
