@@ -47,16 +47,15 @@ export default function Hero() {
           </p>
 
           <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
-            Không kết luận đây có phải lừa đảo.
+            Không ai kết luận thay bạn.
             <br />
-            <span className="text-primary">Đặt câu hỏi</span> để bạn tự nhận ra.
+            <span className="text-primary">Bạn tự nhìn ra dấu hiệu.</span>
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            AskWise là AI đồng hành giúp bạn tự đánh giá độ tin cậy của một tin tuyển dụng
-            đáng ngờ: thay vì nói thẳng đây có phải lừa đảo hay không, AI đặt câu hỏi dẫn dắt
-            từng bước để bạn tự nhận ra dấu hiệu bất thường — và nhớ lâu hơn nhiều so với việc
-            chỉ được cảnh báo suông.
+            Đưa vào một tin tuyển dụng đáng ngờ, AskWise đặt câu hỏi dẫn dắt từng bước để
+            bạn thấy điều bất thường bằng chính mắt mình — thay vì nghe một lời cảnh báo
+            rồi quên.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
