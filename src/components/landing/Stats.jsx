@@ -1,19 +1,20 @@
 import { ShieldCheck } from 'lucide-react'
+import { useI18n } from '../../i18n/useI18n'
 
 // Nguồn: 21st.dev @uilayout.contact/stats-bold — re-theme token, bỏ ảnh remote,
 // viết lại số liệu về sản phẩm. Số liệu là minh hoạ (xem badge).
-const SUB_STATS = [
-  { value: '6', label: 'Dạng lừa đảo đã phân tích' },
-  { value: '6 bước', label: 'Mỗi phiên phân tích' },
-  { value: '92%', label: 'Người dùng thấy tự tin hơn' },
-]
-
 export default function Stats() {
+  const { t } = useI18n()
+  const SUB_STATS = t.stats.subs.map((label, i) => ({
+    label,
+    value: t.stats.subValues[i],
+  }))
+
   return (
     <section className="flex flex-col justify-center border-t border-border bg-background">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-4 py-20 sm:px-6">
         <p className="inline-flex w-fit items-center rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-          Dữ liệu minh hoạ — sẽ cập nhật số liệu thật khi ra mắt
+          {t.stats.badge}
         </p>
 
         <div className="items-center justify-between gap-8 border-b border-border pb-8 md:flex">
@@ -23,11 +24,10 @@ export default function Stats() {
             </span>
             <div className="max-w-xs">
               <h3 className="text-xl font-semibold tracking-tight text-foreground">
-                Câu hỏi dẫn dắt đã đặt ra
+                {t.stats.bigTitle}
               </h3>
               <p className="text-pretty text-sm text-muted-foreground">
-                Mỗi câu hỏi giúp một người tự nhận ra dấu hiệu đáng ngờ thay vì
-                bị phán thay.
+                {t.stats.bigDesc}
               </p>
             </div>
           </div>
@@ -41,7 +41,7 @@ export default function Stats() {
           >
             <ShieldCheck className="h-12 w-12 text-primary" aria-hidden="true" />
             <p className="px-6 text-center text-sm font-medium text-foreground">
-              Tự thẩm định thông tin — không cần ai phán thay.
+              {t.stats.panel}
             </p>
           </div>
         </div>

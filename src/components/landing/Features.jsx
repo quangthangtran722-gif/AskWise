@@ -9,57 +9,21 @@ import {
   Search,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useI18n } from '../../i18n/useI18n'
 
 // Nguồn: 21st.dev @manuarora700/feature-section-with-hover-effects — chuyển JSX,
 // đổi @tabler → lucide, bỏ dark:, re-theme token, và viết lại nội dung chống lừa đảo.
-const FEATURES = [
-  {
-    title: 'Không cho đáp án sẵn',
-    description:
-      'AI không phán thay — bạn tự suy luận nên nhớ lâu và tự tin hơn.',
-    icon: <MessageCircleQuestion />,
-  },
-  {
-    title: 'Dẫn dắt 6 bước',
-    description:
-      'Sáu câu hỏi ngắn đưa bạn đi từ trực giác đến kết luận có cơ sở.',
-    icon: <ListChecks />,
-  },
-  {
-    title: 'Bám tình huống thật',
-    description:
-      'Sáu dạng tin tuyển dụng lừa đảo phổ biến ngoài đời để luyện tập.',
-    icon: <Briefcase />,
-  },
-  {
-    title: 'Miễn phí, không cần tài khoản',
-    description: 'Vào là dùng ngay, không đăng ký, không rào cản.',
-    icon: <BadgeCheck />,
-  },
-  {
-    title: 'Không thu thập dữ liệu',
-    description:
-      'Bạn tự mang thông tin vào phân tích; không lưu hồ sơ cá nhân.',
-    icon: <Lock />,
-  },
-  {
-    title: 'Nhận diện dấu hiệu bất thường',
-    description:
-      'Học cách bắt các cờ đỏ: lương cao bất thường, hối thúc, phí đặt cọc.',
-    icon: <AlertTriangle />,
-  },
-  {
-    title: 'Kiểm chứng nguồn tin',
-    description:
-      'Rèn thói quen đối chiếu qua kênh chính thống trước khi tin.',
-    icon: <Search />,
-  },
-  {
-    title: 'Áp dụng cho mọi thông tin',
-    description:
-      'Kỹ năng không chỉ cho tin tuyển dụng — mà mọi thứ cần thẩm định.',
-    icon: <Globe />,
-  },
+// Lưu component chứ không lưu element: mảng element JSX bị lint bắt thiếu `key`,
+// và element dựng sẵn ở module scope thì không nhận được prop về sau.
+const ICONS = [
+  MessageCircleQuestion,
+  ListChecks,
+  Briefcase,
+  BadgeCheck,
+  Lock,
+  AlertTriangle,
+  Search,
+  Globe,
 ]
 
 function Feature({ title, description, icon, index }) {
@@ -92,16 +56,21 @@ function Feature({ title, description, icon, index }) {
 }
 
 export default function Features() {
+  const { t } = useI18n()
+  const FEATURES = t.features.items.map((f, i) => {
+    const Icon = ICONS[i]
+    return { ...f, icon: <Icon /> }
+  })
+
   return (
     <section className="border-t border-border bg-muted/30 py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Vì sao AskWise hiệu quả
+            {t.features.title}
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Không phải một công cụ tra cứu — mà là cách rèn cho bạn phản xạ tự
-            thẩm định thông tin.
+            {t.features.intro}
           </p>
         </div>
 

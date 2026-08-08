@@ -1,34 +1,22 @@
 import { Compass, Lightbulb, MessageSquarePlus } from 'lucide-react'
 import { TiltCard } from '../ui/tilt-card'
+import { useI18n } from '../../i18n/useI18n'
 
-const STEPS = [
-  {
-    icon: MessageSquarePlus,
-    title: '1. Chọn một tin đáng ngờ',
-    desc: 'Chọn 1 trong 6 tình huống tin tuyển dụng có dấu hiệu lừa đảo — không cần tài khoản.',
-  },
-  {
-    icon: Compass,
-    title: '2. AskWise dẫn dắt 6 bước',
-    desc: 'Thay vì phán thẳng, AskWise hỏi ngược để bạn tự lộ ra các dấu hiệu bất thường.',
-  },
-  {
-    icon: Lightbulb,
-    title: '3. Bạn tự kết luận',
-    desc: 'Khi tự nhận ra cờ đỏ, bạn sẽ cảnh giác lâu dài — chứ không chỉ nghe cảnh báo suông.',
-  },
-]
+const ICONS = [MessageSquarePlus, Compass, Lightbulb]
 
 export default function HowItWorks() {
+  const { t } = useI18n()
+  const STEPS = t.how.steps.map((s, i) => ({ ...s, icon: ICONS[i] }))
+
   return (
     <section id="cach-hoat-dong" className="py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
           <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Cách hoạt động
+            {t.how.title}
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Ba bước đơn giản, bắt đầu ngay từ tình huống đầu tiên.
+            {t.how.intro}
           </p>
         </div>
 

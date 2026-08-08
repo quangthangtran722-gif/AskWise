@@ -1,8 +1,11 @@
 import { ArrowRight, Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from '../ui/button'
+import { useI18n } from '../../i18n/useI18n'
 
 export default function CtaFooter() {
+  const { t } = useI18n()
+
   return (
     <>
       {/* CTA — 21st.dev @sshahaider/cta-3, re-theme token + Việt hoá + nối route. */}
@@ -41,20 +44,20 @@ export default function CtaFooter() {
 
           <div className="space-y-2">
             <h2 className="text-center text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Sẵn sàng tự đánh giá một tin đáng ngờ?
+              {t.cta.title}
             </h2>
             <p className="text-center leading-relaxed text-muted-foreground">
-              Không cần tài khoản. Chọn một tình huống và bắt đầu phân tích ngay.
+              {t.cta.intro}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button variant="outline" className="h-11" asChild>
-              <a href="#cach-hoat-dong">Cách hoạt động</a>
+              <a href="#cach-hoat-dong">{t.cta.secondary}</a>
             </Button>
             <Button className="h-11" asChild>
               <Link to="/phan-tich">
-                Phân tích ngay
+                {t.cta.primary}
                 <ArrowRight className="ml-1 size-4" aria-hidden="true" />
               </Link>
             </Button>
@@ -64,8 +67,8 @@ export default function CtaFooter() {
 
       <footer className="border-t border-border py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 text-center text-sm text-muted-foreground sm:px-6">
-          <p>© {new Date().getFullYear()} AskWise — dự án của nhóm THE TANK, UNESCO Youth Hackathon 2026. Không liên kết với Socrates lịch sử.</p>
-          <p>Nội dung do AI tạo ra có thể chưa chính xác — luôn tự kiểm chứng qua kênh chính thức của doanh nghiệp.</p>
+          <p>{t.cta.copyright(new Date().getFullYear())}</p>
+          <p>{t.cta.disclaimer}</p>
         </div>
       </footer>
     </>

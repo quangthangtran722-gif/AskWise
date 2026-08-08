@@ -2,12 +2,15 @@ import { AlertTriangle, ArrowRight, Search, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Floating, { FloatingElement } from '../ui/parallax-floating'
 import SocraticDemo from './SocraticDemo'
+import { useI18n } from '../../i18n/useI18n'
 
 export default function Hero() {
+  const { t } = useI18n()
+
   return (
     <section className="relative overflow-hidden">
       {/* Lớp nền trôi theo con trỏ (parallax) — trang trí, dùng đủ 3 màu palette
-          teal/cam/amber + icon chủ đề chống lừa đảo. */}
+          cyan/blue/amber + icon chủ đề chống lừa đảo. */}
       <Floating
         sensitivity={0.6}
         className="pointer-events-none z-0"
@@ -47,19 +50,17 @@ export default function Hero() {
       <div className="relative z-10 mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-2 md:items-center md:py-24">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            Phương pháp Socrates · rèn kỹ năng tự nhận diện lừa đảo
+            {t.hero.badge}
           </p>
 
           <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
-            Không ai kết luận thay bạn.
+            {t.hero.headlineA}
             <br />
-            <span className="text-primary">Bạn tự nhìn ra dấu hiệu.</span>
+            <span className="text-primary">{t.hero.headlineB}</span>
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Đưa vào một tin tuyển dụng đáng ngờ, AskWise đặt câu hỏi dẫn dắt từng bước để
-            bạn thấy điều bất thường bằng chính mắt mình — thay vì nghe một lời cảnh báo
-            rồi quên.
+            {t.hero.intro}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -67,21 +68,20 @@ export default function Hero() {
               to="/phan-tich"
               className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 hover:opacity-90"
             >
-              Thử ngay — miễn phí
+              {t.hero.ctaPrimary}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <a
               href="#cach-hoat-dong"
               className="inline-flex h-12 items-center rounded-xl px-6 text-base font-semibold text-foreground underline-offset-4 hover:underline"
             >
-              Xem cách hoạt động
+              {t.hero.ctaSecondary}
             </a>
           </div>
 
           <p className="mt-6 flex items-start gap-2 text-sm text-muted-foreground">
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-secondary" aria-hidden="true" />
-            Được vận hành bởi AI và có thể trả lời chưa chính xác hoàn toàn — hãy tự mình kiểm
-            chứng, đừng để ai bảo bạn phải tin điều gì.
+            {t.hero.disclaimer}
           </p>
         </div>
 

@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { RotateCcw } from 'lucide-react'
-
-const SCRIPT = [
-  { role: 'ai', text: 'Tin này khiến bạn thấy hấp dẫn hay nghi ngờ trước?' },
-  { role: 'user', text: 'Nghi ngờ, nhưng lương cao thật sự hấp dẫn.' },
-  { role: 'ai', text: 'Bạn có biết ai đứng sau tin tuyển dụng này không?' },
-  { role: 'user', text: 'Không, chỉ có link Telegram để liên hệ.' },
-]
+import { useI18n } from '../../i18n/useI18n'
 
 const TYPE_MS = 24
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -24,6 +18,8 @@ function usePrefersReducedMotion() {
 }
 
 export default function SocraticDemo() {
+  const { t } = useI18n()
+  const SCRIPT = t.demo.script
   const reducedMotion = usePrefersReducedMotion()
   const [shown, setShown] = useState([])
   const [thinking, setThinking] = useState(false)
@@ -77,7 +73,7 @@ export default function SocraticDemo() {
     return () => {
       cancelled = true
     }
-  }, [reducedMotion, playToken])
+  }, [reducedMotion, playToken, SCRIPT])
 
   useEffect(() => {
     logRef.current?.scrollTo({
@@ -100,14 +96,14 @@ export default function SocraticDemo() {
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-secondary" />
             </span>
             <span className="text-sm font-medium text-foreground">
-              AskWise · ví dụ minh hoạ
+              {t.demo.header}
             </span>
           </div>
           <button
             type="button"
             onClick={() => setPlayToken((t) => t + 1)}
             disabled={!done && !reducedMotion}
-            aria-label="Xem lại đoạn hội thoại mẫu"
+            aria-label={t.demo.replay}
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
@@ -148,10 +144,10 @@ export default function SocraticDemo() {
       </div>
 
       <p className="sr-only">
-        Ví dụ minh hoạ cách AskWise trò chuyện:{' '}
-        {SCRIPT.map((m) => `${m.role === 'ai' ? 'AskWise' : 'Bạn'}: ${m.text}`).join(
-          ' ',
-        )}
+        {t.demo.srIntro}{' '}
+        {SCRIPT.map(
+          (m) => `${m.role === 'ai' ? t.demo.aiName : t.demo.youName}: ${m.text}`,
+        ).join(' ')}
       </p>
     </div>
   )
