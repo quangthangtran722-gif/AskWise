@@ -15,6 +15,10 @@ dist-ssr
 # Claude Code local config / skills (tooling cá nhân, không thuộc app)
 .claude/
 
+# Ảnh gốc chưa xử lý (nặng, có ảnh 1.5MB). Bản đã cắt vuông + nén dùng thật
+# nằm ở src/assets/testimonials/. Giữ thư mục này trên máy, không đẩy lên repo.
+ảnh cho tesitimonial/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -1,14 +1,39 @@
 import { Quote } from 'lucide-react'
 import { AnimatedTooltip } from '../ui/animated-tooltip'
 import { SpotlightCard } from '../ui/spotlight-card'
+import avatar1 from '@/assets/testimonials/avatar-1.jpg'
+import avatar2 from '@/assets/testimonials/avatar-2.jpg'
+import avatar3 from '@/assets/testimonials/avatar-3.jpg'
+import avatar4 from '@/assets/testimonials/avatar-4.jpg'
 
-// Avatar ví dụ minh hoạ — rê chuột hiện tên/vai trò (thay mặt thật sau).
-const PEOPLE = [
-  { id: 1, name: 'Minh · ví dụ', designation: 'Sinh viên năm 2', initials: 'M' },
-  { id: 2, name: 'Lan · ví dụ', designation: 'Nhân viên văn phòng', initials: 'L' },
-  { id: 3, name: 'Huy · ví dụ', designation: 'Người tìm việc', initials: 'H' },
-  { id: 4, name: 'Trang · ví dụ', designation: 'Phụ huynh', initials: 'T' },
-  { id: 5, name: 'Nam · ví dụ', designation: 'Freelancer', initials: 'N' },
+// Nhóm phát triển — mặt thật đi với danh tính thật. Rê chuột hiện tên + vai trò.
+// KHÔNG dùng hàng avatar này làm "người dùng khen sản phẩm": các trích dẫn bên
+// dưới là nội dung minh hoạ, gắn mặt thật vào đó là dựng social proof giả.
+const TEAM = [
+  {
+    id: 1,
+    name: 'Ngọc',
+    designation: 'AI Engineering & System Integration',
+    image: avatar1,
+  },
+  {
+    id: 2,
+    name: 'Huyền Anh',
+    designation: 'Content & Video Production',
+    image: avatar2,
+  },
+  {
+    id: 3,
+    name: 'Khoa',
+    designation: 'Research & Content',
+    image: avatar3,
+  },
+  {
+    id: 4,
+    name: 'Thắng',
+    designation: 'UI/UX Design & Product Development',
+    image: avatar4,
+  },
 ]
 
 const TESTIMONIALS = [
@@ -46,9 +71,9 @@ export default function Testimonials() {
           </p>
 
           <div className="mt-6 flex items-center gap-4">
-            <AnimatedTooltip items={PEOPLE} />
+            <AnimatedTooltip items={TEAM} />
             <span className="text-sm text-muted-foreground">
-              Cộng đồng ví dụ minh hoạ đang luyện kỹ năng này
+              Nhóm làm AskWise — rê chuột để xem từng người
             </span>
           </div>
         </div>
