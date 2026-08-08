@@ -31,14 +31,30 @@ dẫn dắt **6 bước** để người dùng tự thấy dấu hiệu bất th
 
 ## 2. Design system đã CHỐT
 
-- **Light mode mặc định, KHÔNG theo OS** (`color-scheme: light` trong `index.css`,
-  đã xoá block `@media (prefers-color-scheme: dark)`). Mọi máy thấy 1 giao diện đã
-  kiểm duyệt.
-- **Token màu** (định nghĩa ở `src/index.css` `:root`):
-  - Primary (teal): `--color-primary: #0D9488`
-  - Accent (cam, CTA): `--color-accent: #EA580C` (nút dùng `--color-accent-button #c2410c` cho đủ tương phản)
-  - Amber (highlight/cảnh báo): `--color-highlight: #F59E0B`
-  - Vai trò: teal = tin cậy/nền tảng · cam = hành động/CTA · amber = chú ý/cảnh báo.
+- **DARK mode ép cứng, KHÔNG theo OS** (`color-scheme: dark` trong `index.css`;
+  block `.dark` grayscale của shadcn đã gỡ). Không có biến thể light.
+  *(Đổi từ light sang dark ngày 2026-08-08 — nhóm chốt palette mới.)*
+- **Token màu** (định nghĩa ở `src/index.css` `:root`). Vai trò từng màu do
+  **tương phản quyết định**, không phải sở thích — đừng hoán đổi:
+  | Màu | Token | Vai trò | Tỉ lệ |
+  |---|---|---|---|
+  | Prussian `#050A30` | `--color-background` | Nền | chữ trắng 18:1 |
+  | Cyan `#00FFFF` | `--color-primary` | Nhấn, link, CTA chính, focus ring | 15:1 |
+  | Blue `#0000FF` | `--color-accent` | Mảng đặc + glow, **luôn kèm chữ trắng** | 8.6:1 |
+  | Amber `#F59E0B` | `--color-highlight` | **Chỉ** cảnh báo/dấu hiệu đáng ngờ | 8.9:1 |
+- ⚠️ **KHÔNG dùng blue `#0000FF` làm chữ, icon hay viền** — cạnh nền prussian nó
+  chỉ đạt ~2:1, gần như tàng hình. Icon dùng họ cyan (`--color-secondary`).
+- ⚠️ **Amber là màu chức năng, không phải màu trang trí.** Palette không có màu
+  nóng nào khác; dùng amber cho việc khác là mất khả năng báo hiệu nguy hiểm.
+
+### Song ngữ (i18n)
+- `src/i18n/` — `LanguageContext.jsx` (provider, localStorage, `<html lang>`,
+  `<title>`), `useI18n.js`, `strings.js` (từ điển lồng nhau, KHÔNG dùng `t('a.b')`).
+- **VI mặc định**, đổi bằng nút `[VI|EN]` ở Navbar + ChatPage.
+- `scenarios.json` / `debrief.json` tách `vi` / `en`.
+- **Backend không cần biết ngôn ngữ**: Gemini trả lời theo ngôn ngữ của seed.
+- **Khung từ ngữ khác nhau CÓ CHỦ ĐÍCH**: bản VI vẫn cấm khung gia sư/dạy học;
+  bản EN dùng "AI tutor" cho khớp câu chốt của pitch video (bài thi UNESCO MIL).
 - **Style**: "Flat Design + Accessible & Ethical" (theo ui-ux-pro-max). Font Geist.
 - **Quy trình BẮT BUỘC khi sửa/ thêm UI** (đúng thứ tự):
   1. **ui-ux-pro-max** (skill) — lấy hướng: `python .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <style|ux|landing|product>`.
@@ -89,13 +105,22 @@ section Aceternity feature-hover (Features), Bold Stats (Stats), CTA 3 (CtaFoote
     trong editor để đo thẳng độ trễ 3 model (đo trước, đừng đoán).
   - **Chưa xong**: chưa ai chạy `diagnose()` nên con số ~26s/lần gọi vẫn là suy ra từ
     80s ÷ 3, chưa đo trực tiếp.
-- **(b) 🟠 Testimonials còn placeholder** — avatar là chữ cái (M/L/H/T/N), nội dung là
-  ví dụ minh hoạ. **Cần xác nhận persona đúng là "sinh viên / người tìm việc remote"
-  trước khi thay ảnh & lời thật.** Component `ui/animated-tooltip.jsx` nhận `items`
-  có `{id,name,designation,initials}` — thay `initials` bằng ảnh khi có.
-- **(c) 🟠 Rebrand Socratic→AskWise chưa đồng bộ tài liệu ngoài** — app đã đổi hết
-  text hiển thị sang AskWise, nhưng **Proposal / script video vẫn dùng tên cũ
-  "Socratic"** → cần cập nhật để nhất quán.
+- **(b) ✅ XONG** — hàng avatar giờ là **nhóm phát triển** (mặt thật + tên thật:
+  Ngọc / Huyền Anh / Khoa / Thắng), không còn giả làm "người dùng khen sản phẩm".
+  3 thẻ trích dẫn vẫn là minh hoạ và **phải giữ nhãn** "Ví dụ minh hoạ" /
+  "Illustrative example" ở cả hai ngôn ngữ.
+- **(c) ✅ XONG một nửa** — script video đã có bản cuối ở `docs/pitch-video-script.md`
+  (tên `Scam Check Tutor` → AskWise, kèm sửa 3 chỗ script nói SAI về sản phẩm).
+  **Proposal chưa tồn tại** — Task Tracker cho thấy A2–A9 do Khoa viết đang dở,
+  A10 (ráp + export) chưa bắt đầu. Chốt tên TRƯỚC khi Khoa ráp.
+  - Còn phải xác minh trước khi quay: hai con số **64%** có thật sự trùng nhau
+    không, và **họ đầy đủ của diễn giả** cho dòng credit (v1 ghi "Elizabeth Sherr"
+    nhưng ghi chú webinar chỉ có tên "Elizabeth").
+
+- **(e) 🟠 Độ trễ backend vẫn dao động mạnh** — đo ngày 2026-08-08: một phiên VI
+  dưới 8s, phiên EN 10 phút sau mất **24.2s**, sát mép `TIMEOUT_MS = 25000`.
+  Không còn 80s như trước nhưng chưa ổn định. Khi quay demo phải chạy thử vài
+  lần chọn bản nhanh nhất.
 - **(d) 🟡 A11y/reduced-motion của component mới chưa verify runtime** — đã THÊM guard
   `prefers-reduced-motion` ở code cho `parallax-floating` và `tilt-card`, nhưng **chưa
   test thực tế khi bật reduced-motion** (môi trường test không emulate được).
