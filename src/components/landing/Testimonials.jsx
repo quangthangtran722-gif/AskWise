@@ -82,7 +82,7 @@ export default function Testimonials() {
           {TESTIMONIALS.map((t) => (
             <SpotlightCard
               key={t.quote}
-              spotlightColor="rgba(45, 212, 191, 0.16)"
+              spotlightColor="rgba(0, 255, 255, 0.14)"
               className="flex h-full flex-col gap-4 p-6"
             >
               <Quote className="h-5 w-5 text-secondary" aria-hidden="true" />

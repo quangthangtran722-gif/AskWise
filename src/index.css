@@ -6,33 +6,42 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Design tokens — LMS product line / Flat Design + Accessible & Ethical (ui-ux-pro-max) */
-  --color-primary: #0d9488;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #2dd4bf;
-  --color-secondary-foreground: #134e4a;
-  --color-accent: #ea580c;
+  /* ===================================================================
+     Design tokens — palette DARK: Prussian Blue · Blue · Cyan (+ amber)
+
+     Vai trò từng màu bị RÀNG BUỘC bởi tương phản, không phải sở thích:
+       Prussian #050A30 → nền (chữ trắng trên nó ~18:1)
+       Cyan     #00FFFF → nhấn/link/CTA chính (trên nền ~15:1)
+       Blue     #0000FF → mảng đặc + gradient, LUÔN đi với chữ trắng (8.6:1).
+                          KHÔNG dùng làm chữ/viền: blue cạnh prussian chỉ 2:1.
+       Amber    #F59E0B → CHỈ dùng cho cảnh báo/dấu hiệu đáng ngờ (~8.9:1).
+                          Palette không có màu nóng; đây là màu chức năng,
+                          không phải màu trang trí — đừng dùng cho việc khác.
+     =================================================================== */
+  --color-primary: #00ffff;
+  --color-primary-foreground: #050a30;
+  /* Cyan dịu hơn cho icon phụ — cùng họ cyan, tránh chói khi dùng mảng lớn. */
+  --color-secondary: #67e8f9;
+  --color-secondary-foreground: #050a30;
+  --color-accent: #0000ff;
   --color-accent-foreground: #ffffff;
-  /* Màu thứ 3 của palette — amber "chú ý/cảnh báo", hợp ngữ nghĩa chống lừa đảo.
-     Vai trò: teal = tin cậy, cam = hành động/CTA, amber = highlight/cảnh báo. */
   --color-highlight: #f59e0b;
   --color-highlight-foreground: #451a03;
-  --color-background: #f0fdfa;
-  --color-foreground: #134e4a;
-  --color-card: #ffffff;
-  --color-card-foreground: #134e4a;
-  --color-muted: #e8f1f4;
-  --color-muted-foreground: #64748b;
-  --color-border: #14958a;
-  --color-destructive: #dc2626;
-  --color-destructive-foreground: #ffffff;
-  --color-ring: #0d9488;
+  --color-background: #050a30;
+  --color-foreground: #e6ecff;
+  --color-card: #0b1447;
+  --color-card-foreground: #e6ecff;
+  --color-muted: #111c5c;
+  --color-muted-foreground: #a3b0dc; /* trên nền: 8.9:1 */
+  --color-border: #1e2a6b;
+  --color-destructive: #f87171; /* #dc2626 chỉ đạt 4.0:1 trên nền tối → phải sáng hơn */
+  --color-destructive-foreground: #050a30;
+  --color-ring: #00ffff;
 
-  /* Solid-fill button backgrounds only — darker than Primary/Accent so white
-     button text clears WCAG AA (4.5:1). Primary/Accent stay unchanged for
-     borders, icons, and other non-button uses. */
-  --color-primary-button: #0f766e; /* white text: 5.47:1 */
-  --color-accent-button: #c2410c; /* white text: 5.18:1 */
+  /* Nền nút đặc. Trên nền tối không cần tối đi như bản light — ngược lại,
+     phải đủ sáng để chữ đọc được. */
+  --color-primary-button: #00ffff; /* chữ prussian: 15.4:1 */
+  --color-accent-button: #0000ff; /* chữ trắng: 8.6:1 */
 
   /* Accessible & Ethical style: enforced contrast/interaction minimums */
   --focus-ring-width: 3px;
@@ -46,9 +55,14 @@
   --accent-bg: color-mix(in srgb, var(--color-accent) 10%, transparent);
   --accent-border: color-mix(in srgb, var(--color-accent) 50%, transparent);
   --social-bg: color-mix(in srgb, var(--color-muted) 60%, transparent);
+  /* Trên nền tối, bóng đổ màu phải là đen thật — bóng nhạt kiểu light mode
+     hoàn toàn vô hình. Độ nổi khối lấy thêm từ viền + glow cyan ở component. */
   --shadow:
-    rgba(19, 78, 74, 0.12) 0 10px 15px -3px,
-    rgba(19, 78, 74, 0.08) 0 4px 6px -2px;
+    rgba(0, 0, 0, 0.55) 0 10px 15px -3px,
+    rgba(0, 0, 0, 0.4) 0 4px 6px -2px;
+  /* Glow dùng chung cho hero/CTA — đây mới là thứ tạo ra cảm giác của palette. */
+  --glow-cyan: color-mix(in srgb, var(--color-primary) 22%, transparent);
+  --glow-blue: color-mix(in srgb, var(--color-accent) 45%, transparent);
 
   --sans: 'Geist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: 'Geist Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -56,9 +70,9 @@
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  /* Ép light mode toàn app: không phụ thuộc prefers-color-scheme của máy user,
+  /* Ép DARK toàn app: không phụ thuộc prefers-color-scheme của máy user,
      để mọi người (kể cả giám khảo) thấy đúng 1 giao diện đã kiểm duyệt. */
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -140,8 +154,8 @@
   --sidebar-ring: oklch(0.708 0 0)
 }
 
-/* Dark mode đã gỡ bỏ có chủ đích — app khoá cứng ở light mode (xem
-   color-scheme: light ở trên), không đổi theo prefers-color-scheme của máy. */
+/* App khoá cứng ở DARK (xem color-scheme: dark ở trên), không đổi theo
+   prefers-color-scheme của máy. Không có biến thể light. */
 
 /* Accessible & Ethical: visible keyboard focus, 3-4px ring (WCAG AAA target) */
 :focus-visible {
@@ -283,39 +297,11 @@ button,
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
+/* Block `.dark` mặc định của shadcn (thang xám oklch) đã GỠ: cả app giờ đã tối
+   sẵn bằng token palette ở :root, để lại nó chỉ tạo bẫy — ai đó thêm class
+   `.dark` là toàn bộ màu thương hiệu bị thay bằng xám.
+   `@custom-variant dark` phía trên vẫn giữ để các class `dark:` còn sót trong
+   button.jsx nằm im, thay vì kích hoạt theo prefers-color-scheme của máy. */
 
 @layer base {
   * {

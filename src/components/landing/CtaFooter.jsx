@@ -64,8 +64,8 @@ export default function CtaFooter() {
 
       <footer className="border-t border-border py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 text-center text-sm text-muted-foreground sm:px-6">
-          <p>© {new Date().getFullYear()} AskWise. Một dự án học tập, không liên kết với Socrates lịch sử.</p>
-          <p>Nội dung do AI tạo ra có thể chưa chính xác — luôn đối chiếu với giáo viên hoặc tài liệu chính thống.</p>
+          <p>© {new Date().getFullYear()} AskWise — dự án của nhóm THE TANK, UNESCO Youth Hackathon 2026. Không liên kết với Socrates lịch sử.</p>
+          <p>Nội dung do AI tạo ra có thể chưa chính xác — luôn tự kiểm chứng qua kênh chính thức của doanh nghiệp.</p>
         </div>
       </footer>
     </>

@@ -18,8 +18,8 @@ const ICONS = {
   UserRoundSearch,
 }
 
-// Spotlight teal theo token --color-primary #0D9488 (không dùng màu mặc định).
-const SPOTLIGHT_TEAL = 'rgba(13, 148, 136, 0.20)'
+// Spotlight cyan theo token --color-primary #00FFFF (không dùng màu mặc định).
+const SPOTLIGHT_TEAL = 'rgba(0, 255, 255, 0.18)'
 
 export default function CaseSelector({ scenarios, onSelect }) {
   return (

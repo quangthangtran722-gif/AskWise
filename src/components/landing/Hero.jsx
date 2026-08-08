@@ -13,14 +13,16 @@ export default function Hero() {
         className="pointer-events-none z-0"
         aria-hidden="true"
       >
+        {/* Trên nền tối, blob mờ phải đậm hơn hẳn bản light mới thấy được.
+            Đây là chỗ blue #0000FF phát huy đúng vai trò: mảng glow, không phải icon. */}
         <FloatingElement depth={0.5} className="left-[6%] top-[16%]">
-          <div className="h-24 w-24 rounded-full bg-[var(--color-primary)]/15 blur-2xl" />
+          <div className="h-28 w-28 rounded-full bg-[var(--color-primary)]/25 blur-3xl" />
         </FloatingElement>
         <FloatingElement depth={1} className="left-[80%] top-[10%]">
-          <div className="h-28 w-28 rounded-full bg-[var(--color-highlight)]/25 blur-2xl" />
+          <div className="h-28 w-28 rounded-full bg-[var(--color-highlight)]/25 blur-3xl" />
         </FloatingElement>
         <FloatingElement depth={1.5} className="left-[68%] top-[74%]">
-          <div className="h-20 w-20 rounded-full bg-[var(--color-accent)]/15 blur-2xl" />
+          <div className="h-32 w-32 rounded-full bg-[var(--color-accent)]/50 blur-3xl" />
         </FloatingElement>
 
         <FloatingElement depth={1.2} className="left-[9%] top-[66%]">
@@ -34,7 +36,9 @@ export default function Hero() {
           </div>
         </FloatingElement>
         <FloatingElement depth={0.8} className="left-[46%] top-[4%]">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card text-[var(--color-accent)] shadow-sm">
+          {/* KHÔNG dùng --color-accent (blue) cho icon: blue trên nền card chỉ
+              ~2:1, gần như tàng hình. Icon dùng họ cyan. */}
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card text-[var(--color-secondary)] shadow-sm">
             <Search className="h-4 w-4" aria-hidden="true" />
           </div>
         </FloatingElement>

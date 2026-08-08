@@ -88,7 +88,7 @@ export default function SocraticDemo() {
 
   return (
     <div className="relative mx-auto w-full max-w-md">
-      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_20px_50px_-20px_rgba(15,118,110,0.35)]">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[0_20px_60px_-20px_rgba(0,255,255,0.25)]">
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2.5 w-2.5">

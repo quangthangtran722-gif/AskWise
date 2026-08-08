@@ -108,8 +108,10 @@
 
 .bubble-user {
   align-self: flex-end;
-  background: var(--color-primary-button);
-  color: var(--color-primary-foreground);
+  /* Blue chứ không phải cyan: bong bóng là mảng lớn, cyan bão hoà ở diện tích
+     này chói mắt trên nền tối. Cyan để dành cho nhấn nhỏ (link, viền, glow). */
+  background: var(--color-accent-button);
+  color: var(--color-accent-foreground);
   border-bottom-right-radius: 4px;
 }
 
@@ -126,7 +128,7 @@
   padding: 8px 14px;
   font-size: 14px;
   text-align: center;
-  color: var(--color-destructive, #b91c1c);
+  color: var(--color-destructive, #f87171);
 }
 
 /* Nút .chat-retry / .debrief-option / .btn-send đã chuyển sang shadcn Button
