@@ -4,11 +4,12 @@ import Chat from '../components/Chat'
 import { LanguageToggle } from '../components/ui/language-toggle'
 import { useI18n } from '../i18n/useI18n'
 
+// Không bg-background ở wrapper — xem ghi chú trong Landing.jsx (che lớp aurora).
 export default function ChatPage() {
   const { t } = useI18n()
 
   return (
-    <div className="flex min-h-dvh flex-col bg-background text-foreground">
+    <div className="flex min-h-dvh flex-col text-foreground">
       <header className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
         <Link
           to="/"

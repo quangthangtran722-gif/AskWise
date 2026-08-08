@@ -29,7 +29,10 @@
   --color-highlight-foreground: #451a03;
   --color-background: #050a30;
   --color-foreground: #e6ecff;
-  --color-card: #0b1447;
+  /* Card KHÔNG đục hoàn toàn: để lớp aurora phía sau lọt qua một chút thì thẻ
+     mới "nổi trên" nền thay vì "dán lên" nền. 84% là mức đo được vẫn giữ chữ
+     #e6ecff ở trên 14:1 kể cả chỗ aurora sáng nhất. */
+  --color-card: color-mix(in srgb, #0b1447 84%, transparent);
   --color-card-foreground: #e6ecff;
   --color-muted: #111c5c;
   --color-muted-foreground: #a3b0dc; /* trên nền: 8.9:1 */
@@ -179,10 +182,94 @@ body {
   margin: 0;
 }
 
+/* ===================================================================
+   Lớp "aurora" — thứ tạo cảm giác không gian.
+
+   Vì sao FIXED chứ không nằm trong luồng: nền đứng yên trong khi nội dung
+   trôi qua trước nó, nên mắt đọc ra hai mặt phẳng ở hai độ sâu khác nhau.
+   Nếu nền cuộn cùng nội dung thì nó chỉ là hình dán, không phải không gian.
+
+   Đặt ở body::before + #root z-index 1 để không phải đụng vào JSX nào.
+   =================================================================== */
+body::before {
+  content: '';
+  position: fixed;
+  /* PHẢI là inset:0. Nếu cho tràn ra ngoài (vd inset:-25%) thì toạ độ %
+     của radial-gradient tính theo hộp đã phình, "88% 16%" rơi ra ngoài
+     màn hình và vầng sáng biến mất. Biên dự phòng cho animation lấy từ
+     scale() bên dưới, không lấy từ inset. */
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    /* Cyan trên-trái: nhạt nhất, vì đây là vùng đặt headline — sáng lên là
+       nuốt mất chữ. */
+    radial-gradient(
+      62% 48% at 10% 6%,
+      color-mix(in srgb, var(--color-primary) 15%, transparent),
+      transparent 68%
+    ),
+    /* Blue phải-trên: đậm nhất. Đây là chỗ blue #0000FF làm tốt nhất —
+       mảng sáng lớn, không có chữ đè lên. */
+    radial-gradient(
+      55% 45% at 88% 16%,
+      color-mix(in srgb, var(--color-accent) 33%, transparent),
+      transparent 70%
+    ),
+    /* Blue trái-dưới: cân lại bố cục, giữ cho nửa dưới không chết. */
+    radial-gradient(
+      50% 40% at 6% 74%,
+      color-mix(in srgb, var(--color-accent) 23%, transparent),
+      transparent 72%
+    ),
+    /* Cyan đáy: dựng "chân trời" sáng ở mép dưới. */
+    radial-gradient(
+      72% 42% at 55% 100%,
+      color-mix(in srgb, var(--color-primary) 13%, transparent),
+      transparent 72%
+    );
+  animation: aurora-drift 26s ease-in-out infinite alternate;
+}
+
+/* Vignette + grain, tách riêng khỏi lớp trên vì KHÔNG được trôi theo —
+   vignette phải bám mép màn hình, và grain trôi thì thành nhiễu động. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Grain bắt buộc chứ không phải trang trí: gradient xanh đậm trên màn 8-bit
+     bị "banding" thành từng dải rõ mắt. Một lớp nhiễu ~3% phá vỡ các dải đó. */
+  background-image:
+    radial-gradient(
+      130% 110% at 50% 45%,
+      transparent 45%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
+  background-size:
+    cover,
+    140px 140px;
+}
+
+@keyframes aurora-drift {
+  /* Cả hai mốc đều scale > 1 để lúc trôi không bao giờ hở mép viewport. */
+  from {
+    transform: translate3d(-2%, -1.5%, 0) scale(1.14);
+  }
+  to {
+    transform: translate3d(2%, 2%, 0) scale(1.22);
+  }
+}
+
 #root {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  /* Bắt buộc: đẩy toàn bộ nội dung lên trên hai lớp nền ở trên. */
+  position: relative;
+  z-index: 1;
 }
 
 /* Base element defaults, layered so Tailwind utility classes (higher

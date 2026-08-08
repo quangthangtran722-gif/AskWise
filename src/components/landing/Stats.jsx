@@ -11,7 +11,7 @@ export default function Stats() {
   }))
 
   return (
-    <section className="flex flex-col justify-center border-t border-border bg-background">
+    <section className="flex flex-col justify-center border-t border-border">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-4 py-20 sm:px-6">
         <p className="inline-flex w-fit items-center rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
           {t.stats.badge}
