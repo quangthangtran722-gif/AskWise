@@ -2,13 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import scenarios from '../data/scenarios.json'
 import debrief from '../data/debrief.json'
 import { askSocraticTutor, parseStep } from '../services/aiService'
+import { useI18n } from '../i18n/useI18n'
 import CaseSelector from './CaseSelector'
 import { Button } from './ui/button'
 import { Typing } from './ui/typing'
 import './Chat.css'
-
-const DEBRIEF_STEPS = debrief.steps
-const DEBRIEF_CLOSING = debrief.closing
 
 // Nhận diện câu cuối để chuyển sang debrief. Dùng chung parseStep với aiService —
 // trước đây mỗi nơi một regex nên khi backend đổi "trên" thành "của" thì nhãn hỏng
@@ -19,6 +17,9 @@ function isFinalQuestion(text) {
 }
 
 function Chat() {
+  const { locale, t } = useI18n()
+  const DEBRIEF_STEPS = debrief[locale].steps
+  const DEBRIEF_CLOSING = debrief[locale].closing
   const [messages, setMessages] = useState([])
   const [draft, setDraft] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -56,13 +57,13 @@ function Chat() {
     setError('')
     setIsLoading(true)
     try {
-      const reply = await askSocraticTutor(history)
+      const reply = await askSocraticTutor(history, locale)
       append('ai', reply)
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : 'Không kết nối được tới AI. Vui lòng thử lại.',
+          : t.chat.errorGeneric,
       )
     } finally {
       setIsLoading(false)
@@ -71,7 +72,7 @@ function Chat() {
 
   // Chọn 1 case → seed tình huống (role user) và gửi lên backend ngay.
   function startSession(scenario) {
-    const seed = { id: 1, role: 'user', text: scenario.seed }
+    const seed = { id: 1, role: 'user', text: scenario[locale].seed }
     setPhase('chat')
     setDebriefStep(0)
     setError('')
@@ -183,7 +184,7 @@ function Chat() {
           aria-valuemin={1}
           aria-valuemax={6}
           aria-valuenow={currentStep}
-          aria-label={`Bước ${currentStep} trên 6`}
+          aria-label={t.chat.stepAria(currentStep, 6)}
         >
           <div className="chat-progress-track">
             {Array.from({ length: 6 }, (_, i) => (
@@ -193,7 +194,9 @@ function Chat() {
               />
             ))}
           </div>
-          <span className="chat-progress-label">Bước {currentStep}/6</span>
+          <span className="chat-progress-label">
+            {t.chat.stepOf(currentStep, 6)}
+          </span>
         </div>
       )}
 
@@ -201,7 +204,7 @@ function Chat() {
         {messages.map((message) => (
           <div key={message.id} className={`bubble bubble-${message.role}`}>
             <span className="bubble-label">
-              {message.role === 'ai' ? 'AI' : 'Bạn'}
+              {message.role === 'ai' ? t.chat.aiLabel : t.chat.youLabel}
             </span>
             <p>{message.text}</p>
           </div>
@@ -209,7 +212,7 @@ function Chat() {
 
         {isLoading && (
           <div className="bubble bubble-ai" aria-live="polite">
-            <span className="bubble-label">AI</span>
+            <span className="bubble-label">{t.chat.aiLabel}</span>
             {/* Chờ có thể tới ~20s (thinking model) — nói rõ để không bị hiểu là treo.
                 Chấm động chỉ là trang trí; câu chữ mới là thứ đọc cho screen reader. */}
             <div className="mt-2 flex items-center gap-2.5">
@@ -217,7 +220,7 @@ function Chat() {
                 aria-hidden="true"
                 className="w-8 py-1 text-[var(--color-primary)]"
               />
-              <span className="text-sm opacity-60">AI đang phân tích…</span>
+              <span className="text-sm opacity-60">{t.chat.thinking}</span>
             </div>
           </div>
         )}
@@ -232,7 +235,7 @@ function Chat() {
                 className="min-h-11 shrink-0"
                 onClick={() => sendToTutor(convRef.current)}
               >
-                Thử lại
+                {t.chat.retry}
               </Button>
             )}
           </div>
@@ -260,12 +263,12 @@ function Chat() {
       {showTextInput && (
         <form className="chat-input" onSubmit={handleSubmit}>
           <label htmlFor="chat-message" className="sr-only">
-            Nhập câu trả lời của bạn
+            {t.chat.inputLabel}
           </label>
           <textarea
             id="chat-message"
             rows={1}
-            placeholder="Nhập câu trả lời của bạn..."
+            placeholder={t.chat.inputPlaceholder}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -276,16 +279,16 @@ function Chat() {
             disabled={!draft.trim() || isLoading}
             className="h-11 shrink-0 rounded-xl bg-[var(--color-accent-button)] px-5 text-base text-accent-foreground hover:bg-[var(--color-accent-button)] hover:opacity-90"
           >
-            {isLoading ? 'Đang gửi...' : 'Gửi'}
+            {isLoading ? t.chat.sending : t.chat.send}
           </Button>
         </form>
       )}
 
       {phase === 'done' && (
         <div className="chat-done">
-          <p role="status">Bạn đã hoàn thành phiên phân tích. 🎉</p>
+          <p role="status">{t.chat.doneTitle}</p>
           <Button variant="outline" onClick={resetToSelect}>
-            Chọn case khác
+            {t.chat.chooseAnother}
           </Button>
         </div>
       )}
