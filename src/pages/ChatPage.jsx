@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Chat from '../components/Chat'
 import { LanguageToggle } from '../components/ui/language-toggle'
 import { useI18n } from '../i18n/useI18n'
+import logoMark from '@/assets/logo-mark.png'
 
 // Không bg-background ở wrapper — xem ghi chú trong Landing.jsx (che lớp aurora).
 export default function ChatPage() {
@@ -18,7 +19,19 @@ export default function ChatPage() {
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           {t.nav.home}
         </Link>
-        <span className="text-sm font-semibold text-foreground">AskWise</span>
+        <span className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+          {/* Nền sáng — xem ghi chú trong Navbar.jsx. */}
+          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-white p-px">
+            <img
+              src={logoMark}
+              alt=""
+              width="22"
+              height="22"
+              className="h-full w-full object-contain"
+            />
+          </span>
+          AskWise
+        </span>
         {/* Đổi ngôn ngữ giữa phiên là reset phiên (seed đã gửi bằng ngôn ngữ cũ),
             nên nút để ở đây chủ yếu cho màn chọn tình huống. */}
         <LanguageToggle className="ml-auto" />
